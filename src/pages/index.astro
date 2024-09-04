@@ -1,0 +1,165 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Loader from "@components/Loader.astro";
+import IntDropdown from "@components/IntDropdown.astro";
+import CategorizedDropdown from "@components/CategorizedDropdown.astro";
+import IconButton from "@components/IconButton.astro";
+import { Icon } from "astro-icon/components";
+
+import Paragraphs from "@components/segments/paragraphs.mdx";
+
+const defaultFont = "Nishiki-teki-lili";
+
+const frontmatter = { title: "ilo Nasin" };
+---
+
+<script>
+  import { BASE_URL } from "@utils/constants";
+  import { consoleLogAsync } from "@utils/debug";
+  import { getFonts } from "@utils/linku";
+  import { getFontParams, toURLParams } from "@utils/urlparams";
+  // import { copyUrlToClipboard } from "@utils/ui";
+
+  let fontDropdown: HTMLInputElement;
+  let fontDemo: HTMLDivElement;
+  // let fontUpload: HTMLInputElement;
+
+  let loader: HTMLSpanElement;
+
+  // let sampleQueryButton: HTMLElement;
+  // let copyUrlButton: HTMLElement;
+
+  function initFetch() {
+    fontDropdown = document.getElementById("fontDropdown")! as HTMLInputElement;
+    fontDemo = document.getElementById("fontDemo")! as HTMLDivElement;
+    // fontUpload = document.getElementById("fontUpload")! as HTMLInputElement;
+
+    loader = document.getElementById("loader")! as HTMLSpanElement;
+
+    // sampleQueryButton = document.getElementById(
+    //   "sampleQueryButton",
+    // )! as HTMLElement;
+    // copyUrlButton = document.getElementById("copyUrlButton")! as HTMLElement;
+  }
+
+  async function initForms() {
+    let fonts = await getFonts();
+
+    fontDropdown.innerHTML = "";
+
+    for (const [_, font] of Object.entries(fonts)) {
+      if (!font.links.fontfile) {
+        continue;
+      }
+
+      const option = document.createElement("option");
+      option.text = font.name;
+      option.value = font.id;
+
+      fontDropdown.appendChild(option);
+    }
+  }
+
+  async function updatePage() {
+    const fontID = fontDropdown.value;
+
+    loader.style.visibility = "visible";
+    await updateDemo(fontID);
+    loader.style.visibility = "hidden";
+
+    let usedParams: Record<string, string> = { font: fontID };
+
+    toURLParams(usedParams);
+  }
+
+  async function updateDemo(fontID: string) {
+    const fontData = await getFonts();
+    const fontURL = fontData[fontID].filename;
+    updateFont(fontURL);
+  }
+
+  function updateFont(fontFilename: string) {
+    const styleSheets = document.styleSheets;
+    const newRule = `
+    @font-face {
+      font-family: sp;
+      src: url("${BASE_URL}/nasin-sitelen/${fontFilename}");
+    }`;
+
+    for (let i = 0; i < styleSheets.length; i++) {
+      const rules = styleSheets[i].cssRules || styleSheets[i].rules;
+      for (let j = 0; j < rules.length; j++) {
+        const rule = rules[j];
+        if (rule instanceof CSSFontFaceRule) {
+          styleSheets[i].deleteRule(j);
+          styleSheets[i].insertRule(newRule, j);
+          return;
+        }
+      }
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    initFetch();
+
+    initForms();
+
+    // let initialParams = getFontParams();
+    // fontDropdown.value = initialParams.font;
+    //
+    // initial page update
+    // await updatePage();
+
+    const form = document.getElementById("fontForm")! as HTMLFormElement;
+    form.addEventListener("change", async () => {
+      await updatePage();
+    });
+  });
+</script>
+
+<Layout frontmatter={frontmatter}>
+  <div>
+    <form
+      id="fontForm"
+      onsubmit="return false;"
+      autocomplete="off"
+      style="display: inline;"
+    >
+      <select id="fontDropdown"></select>
+
+      <select id="demoSelector">
+        <option value="words">nimi</option>
+        <option value="punctuation">sitelen pini</option>
+        <option value="cartouches">poki nimi</option>
+        <option value="extensions">nimi poki</option>
+        <option value="stacked">sitelen sewi</option>
+        <option value="scaled">sitelen insa</option>
+        <option value="nasa">ijo nasa</option>
+      </select>
+
+      <select id="coverageSelector">
+        <option value="required">ale wile</option>
+        <option value="recommended">ale pona</option>
+        <option value="extras">ale wawa</option>
+        <option value="everything">ale ken</option>
+      </select>
+      <Loader id="loader" />
+    </form>
+  </div>
+
+  <div id="fontDemo">
+    <Paragraphs />
+  </div>
+</Layout>
+
+<style>
+  @font-face {
+    font-family: sp;
+    src: url("https://raw.githubusercontent.com/RetSamys/nishiki-teki-lili/main/nishiki-teki-lili.ttf");
+  }
+  .tp {
+    font-family: sp;
+  }
+</style>
+
+<style></style>

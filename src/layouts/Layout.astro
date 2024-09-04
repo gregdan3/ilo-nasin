@@ -1,0 +1,342 @@
+---
+interface Frontmatter {
+  title: string;
+}
+
+interface Props {
+  frontmatter: Frontmatter;
+}
+
+const { title } = Astro.props.frontmatter;
+
+import { BASE_URL } from "@utils/constants";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, height=device-height, user-scalable=yes, initial-scale=1.0"
+    />
+    <meta name="date" content="2024-09-03" />
+    <meta property="og:title" content={title} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gregdan3.github.io/ilo-nasin/" />
+    <meta property="og:image" content=`${BASE_URL}/ilo-nasin.png` />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="ilo Nasin" />
+    <meta property="og:description" content="Test your toki pona font!" />
+
+    <title>{title}</title>
+    <!-- <link rel="icon" type="image/svg+xml" href=`${BASE_URL}/favicon.svg` /> -->
+    <!-- <link rel="icon" type="image/x-icon" href=`${BASE_URL}/favicon.ico` /> -->
+    <!-- <link -->
+    <!--   rel="icon" -->
+    <!--   type="image/png" -->
+    <!--   sizes="32x32" -->
+    <!--   href=`${BASE_URL}/favicon-32x32.png` -->
+    <!-- /> -->
+    <!-- <link -->
+    <!--   rel="icon" -->
+    <!--   type="image/png" -->
+    <!--   sizes="16x16" -->
+    <!--   href=`${BASE_URL}/favicon-16x16.png` -->
+    <!-- /> -->
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#f2f2f2"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#333333"
+    />
+
+    <!-- <script -->
+    <!--   data-goatcounter="https://ilo-muni.goatcounter.com/count" -->
+    <!--   async -->
+    <!--   src="//gc.zgo.at/count.js"></script> -->
+  </head>
+
+  <body>
+    <nav>
+      <a href=`${BASE_URL}/`>Fonts</a>
+      <!-- <a href=`${BASE_URL}/ranks`>Ranks</a> -->
+      <a href=`${BASE_URL}/about`>About</a>
+      <!-- <a href=`${BASE_URL}/help`>Help!</a> -->
+      <!-- <a href=`https://gregdan3.github.io/ilo-muni/`>ilo Muni</a> -->
+    </nav>
+
+    <article>
+      <header>
+        <!-- <img src=`${BASE_URL}/favicon.svg` /> -->
+        <h3>{title}</h3>
+      </header>
+
+      <slot />
+
+      <footer style="margin-top: 1em">
+        <div style="display: flex; justify-content: center; ">
+          <a href="https://github.com/gregdan3" style="margin:0.5em;">
+            <img
+              src=`${BASE_URL}/buttons/code_s.gif`
+              alt="@gregdan3 on GitHub"
+              class="social"
+            />
+          </a>
+          <a href="https://mun.la/sona" style="margin:0.5em;">
+            <img
+              src=`${BASE_URL}/buttons/lessons_s.gif`
+              alt="@gregdan3d on YouTube"
+              class="social"
+            />
+          </a>
+          <a href="https://youtube.com/@gregdan3d" style="margin:0.5em;">
+            <img
+              src=`${BASE_URL}/buttons/youtube_s.gif`
+              alt="@gregdan3d on YouTube"
+              class="social"
+            />
+          </a>
+        </div>
+
+        <div style="margin-top: 1em; text-align: center; line-height: 1.8em">
+          <div>
+            <a href="https://github.com/gregdan3/ilo-nasin">Code on GitHub</a>
+            -
+            <a href="https://github.com/gregdan3/ilo-nasin/issues"
+              >Report an issue</a
+            >
+          </div>
+          <div>
+            Licensed under
+            <a href=`${BASE_URL}/LICENSE.AGPL-3.0-or-later.txt`
+              >AGPL-3.0-or-later</a
+            >
+            and
+            <a href=`${BASE_URL}/LICENSE.CC-BY-SA-4.0.txt`>CC BY-SA-4.0</a>
+          </div>
+        </div>
+      </footer>
+    </article>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --prim-fg: #444444;
+    --prim-bg: #f2f2f2;
+    --prim-ac: #555555;
+
+    --sec-fg: #333333;
+    --sec-bg: #d3d3d3;
+
+    --spoil-fg: #443231;
+    --spoil-bg: #e2c49c;
+
+    --url: #3366cc;
+    --urlvisited: #7755bb;
+
+    --block-mark: 4px;
+    --indent: 0.5em;
+  }
+  html {
+    font-size: 16px;
+    font-family: -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,
+      Cantarell, "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  body {
+    margin: 0;
+  }
+
+  header {
+    display: flex;
+    padding-block: 1em;
+  }
+  header > h3 {
+    margin-block: auto;
+    margin-left: 0.75em;
+    margin-right: auto;
+  }
+  header > img {
+    width: 4em;
+    height: 3em;
+  }
+  nav {
+    text-align: center;
+    font-weight: bold;
+    margin: 1em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+  }
+
+  nav > a {
+    color: inherit;
+    border: 0.3em outset lightgray;
+    padding: 0.5em;
+    padding-left: 1.5%;
+    padding-right: 1.5%;
+    margin: 1%;
+    margin-left: 1.5%;
+    margin-right: 1.5%;
+    box-shadow: 0.15em 0.15em 0 0 rgba(0, 0, 0, 1);
+  }
+
+  nav > a:hover {
+    box-shadow: 0.25em 0.25em 0 0 rgba(0, 0, 0, 1);
+  }
+
+  nav > a:active {
+    border-style: inset;
+    background: #dddddd;
+  }
+
+  code {
+    background: var(--sec-bg);
+    padding: 0.1em;
+  }
+
+  p {
+    margin: 0;
+    margin-left: var(--indent);
+    margin-right: var(--indent);
+  }
+  p + p {
+    margin-top: 10px;
+  }
+
+  article summary {
+    cursor: pointer;
+    padding: var(--indent);
+  }
+  article summary > * {
+    display: inline-block;
+  }
+
+  article details {
+    display: block;
+    color: var(--spoil-fg);
+    background: var(--spoil-bg);
+    border-left: var(--block-mark) solid var(--spoil-fg);
+    margin: var(--indent);
+  }
+  article details > p {
+    padding: var(--indent);
+  }
+  article details[open] {
+    padding-bottom: 0.25em;
+  }
+  article details[open] > summary {
+    border-bottom: var(--block-mark) solid var(--spoil-fg);
+  }
+
+  article blockquote {
+    margin: var(--indent);
+    padding: var(--indent);
+  }
+  blockquote {
+    color: var(--sec-fg);
+    background: var(--sec-bg);
+    border-left: var(--block-mark) solid var(--sec-fg);
+  }
+
+  article {
+    margin: 6% auto;
+    margin-top: 0%;
+    padding: 4%;
+    padding-top: 0%;
+    background: var(--prim-bg);
+    color: var(--prim-fg);
+    max-width: 80%;
+    box-shadow:
+      0 5px 10px rgba(0, 0, 0, 0.2),
+      0 15px 40px rgba(0, 0, 0, 0.05);
+    line-height: 1.5em;
+  }
+  footer {
+    font-size: 0.75em;
+    line-height: 1em;
+    margin-top: 1em;
+  }
+  article a {
+    text-decoration: underline var(--url);
+    color: var(--url);
+  }
+  article a:hover {
+    text-decoration: underline dotted;
+  }
+  article a:visited {
+    text-decoration: underline var(--urlvisited);
+    color: var(--urlvisited);
+  }
+
+  .social {
+    width: 88px;
+    height: 31px;
+    box-shadow: 0.1em 0.1em 0 0 rgba(0, 0, 0, 1);
+    border: 2px solid var(--prim-fg);
+    image-rendering: pixelated;
+  }
+
+  .social:hover {
+    box-shadow: 0.2em 0.2em 0 0 rgba(0, 0, 0, 1);
+    border: 2px solid var(--prim-fg);
+  }
+
+  @media (min-width: 600px) {
+    .social {
+      width: 110px;
+      height: 38.75px;
+    }
+  }
+
+  @media (min-width: 900px) {
+    html {
+      font-size: 18px;
+    }
+    article {
+      line-height: 1.7em;
+    }
+    .social {
+      width: 132px;
+      height: 46.5px;
+    }
+  }
+  @media (min-width: 1200px) {
+    html {
+      font-size: 20px;
+    }
+    .social {
+      width: 176px;
+      height: 62px;
+    }
+  }
+  @media (min-width: 1500px) {
+    html {
+      font-size: 22px;
+    }
+  }
+  @media (min-width: 1800px) {
+    html {
+      font-size: 24px;
+    }
+    .social {
+      width: 264px;
+      height: 93px;
+    }
+  }
+  @media (pointer: none), (pointer: coarse) {
+    html {
+      font-size: 16px;
+    }
+    article {
+      max-width: 100%;
+      padding: 6%;
+      padding-top: 0;
+      margin: 0;
+    }
+  }
+</style>
